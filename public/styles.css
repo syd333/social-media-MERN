@@ -37,3 +37,11 @@ body {
   margin: 0;
   padding: 0.5em 1em 0.75em !important;
 }
+
+.ui.secondary.menu .active.item {
+  background: white !important;
+}
+
+.ui.secondary.menu {
+  border-bottom: 1px solid black !important;
+}
