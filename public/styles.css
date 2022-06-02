@@ -45,3 +45,12 @@ body {
 .ui.secondary.menu {
   border-bottom: 1px solid black !important;
 }
+
+.ui.message>:last-child {
+  padding-left: 1rem;
+  color: black !important;
+}
+
+.ui.warning.message {
+  color: black !important;
+}

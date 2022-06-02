@@ -2,11 +2,14 @@ import { useState, useEffect, useRef } from "react";
 import { Form, Button, Message, Segment, Divider } from "semantic-ui-react";
 import CommonInputs from "../components/Common/CommonInputs";
 import ImageDropDiv from "../components/Common/ImageDropDiv";
-import { HeaderMessage, FooterMessage } from "../components/Common/WelcomeMessage";
+import {
+  HeaderMessage,
+  FooterMessage,
+} from "../components/Common/WelcomeMessage";
 import axios from "axios";
-import baseUrl from "../utils/baseUrl";
+// import baseUrl from "../utils/baseUrl";
 import { registerUser } from "../utils/authUser";
-import uploadPic from "../utils/uploadPicToCloudinary";
+// import uploadPic from "../utils/uploadPicToCloudinary";
 let controller = null;
 
 function Signup() {
@@ -18,12 +21,12 @@ function Signup() {
     facebook: "",
     youtube: "",
     twitter: "",
-    instagram: ""
+    instagram: "",
   });
 
   const { name, email, password, bio } = user;
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value, files } = e.target;
 
     if (name === "media") {
@@ -33,7 +36,7 @@ function Signup() {
       }
     }
 
-    setUser(prev => ({ ...prev, [name]: value }));
+    setUser((prev) => ({ ...prev, [name]: value }));
   };
 
   const [showSocialLinks, setShowSocialLinks] = useState(false);
@@ -42,10 +45,14 @@ function Signup() {
   const [formLoading, setFormLoading] = useState(false);
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
-  const usernameInputDiv = useRef();
-  const requiredFieldDiv = useRef();
-  const usernameInput = useRef();
-  const leftIcon = useRef();
+  const [username, setUsername] = useState("");
+  const [usernameLoading, setUsernameLoading] = useState(false);
+  const [usernameAvailable, setUsernameAvailable] = useState(false);
+
+  // const usernameInputDiv = useRef();
+  // const requiredFieldDiv = useRef();
+  // const usernameInput = useRef();
+  // const leftIcon = useRef();
 
   const [media, setMedia] = useState(null);
   const [mediaPreview, setMediaPreview] = useState(null);
@@ -53,83 +60,87 @@ function Signup() {
   const inputRef = useRef();
 
   useEffect(() => {
-    const isUser = Object.values({ name, email, password, bio }).every(item =>
+    const isUser = Object.values({ name, email, password, bio }).every((item) =>
       Boolean(item)
     );
     isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
   }, [user]);
 
-  const checkUsername = async (value = "") => {
-    if (value.length === 0 || value.trim().length === 0) {
-      if (!requiredFieldDiv.current.classList.contains("error")) {
-        requiredFieldDiv.current.classList.add("error");
-      }
+  // const checkUsername = async (value = "") => {
+  //   if (value.length === 0 || value.trim().length === 0) {
+  //     if (!requiredFieldDiv.current.classList.contains("error")) {
+  //       requiredFieldDiv.current.classList.add("error");
+  //     }
 
-      leftIcon.current.className = "close icon";
-      return;
-    }
+  //     leftIcon.current.className = "close icon";
+  //     return;
+  //   }
 
-    usernameInput.current.value = value;
+  //   usernameInput.current.value = value;
 
-    usernameInputDiv.current.classList.add("loading");
+  //   usernameInputDiv.current.classList.add("loading");
 
-    try {
-      if (controller) controller.abort();
+  //   try {
+  //     if (controller) controller.abort();
 
-      controller = new AbortController();
+  //     controller = new AbortController();
 
-      const res = await axios.get(`${baseUrl}/api/signup/${value}`, {
-        signal: controller.signal
-      });
+  //     const res = await axios.get(`${baseUrl}/api/signup/${value}`, {
+  //       signal: controller.signal,
+  //     });
 
-      if (res.data === "Available") {
-        if (requiredFieldDiv.current.classList.contains("error")) {
-          requiredFieldDiv.current.classList.remove("error");
-        }
+  //     if (res.data === "Available") {
+  //       if (requiredFieldDiv.current.classList.contains("error")) {
+  //         requiredFieldDiv.current.classList.remove("error");
+  //       }
 
-        leftIcon.current.className = "check icon";
-        setUser(prev => ({ ...prev, username: value }));
-      }
-    } catch (error) {
-      setErrorMsg("Username Not Available");
+  //       leftIcon.current.className = "check icon";
+  //       setUser((prev) => ({ ...prev, username: value }));
+  //     }
+  //   } catch (error) {
+  //     setErrorMsg("Username Not Available");
 
-      if (!requiredFieldDiv.current.classList.contains("error")) {
-        requiredFieldDiv.current.classList.add("error");
-      }
+  //     if (!requiredFieldDiv.current.classList.contains("error")) {
+  //       requiredFieldDiv.current.classList.add("error");
+  //     }
 
-      leftIcon.current.className = "close icon";
-    }
+  //     leftIcon.current.className = "close icon";
+  //   }
 
-    usernameInputDiv.current.classList.remove("loading");
-    controller = null;
-  };
+  //   usernameInputDiv.current.classList.remove("loading");
+  //   controller = null;
+  // };
 
-  const handleSubmit = async e => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    if (requiredFieldDiv.current.classList.contains("error")) {
-      return setErrorMsg("Username not available");
-    }
+  //   if (requiredFieldDiv.current.classList.contains("error")) {
+  //     return setErrorMsg("Username not available");
+  //   }
 
-    setFormLoading(true);
+  //   setFormLoading(true);
 
-    let profilePicUrl;
-    if (media !== null) {
-      profilePicUrl = await uploadPic(media);
-    }
+  //   let profilePicUrl;
+  //   if (media !== null) {
+  //     profilePicUrl = await uploadPic(media);
+  //   }
 
-    if (media !== null && !profilePicUrl) {
-      setFormLoading(false);
-      return setErrorMsg("Error Uploading Image");
-    }
+  //   if (media !== null && !profilePicUrl) {
+  //     setFormLoading(false);
+  //     return setErrorMsg("Error Uploading Image");
+  //   }
 
-    await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
-  };
+  //   await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
+  // };
 
   return (
     <>
       <HeaderMessage />
-      <Form loading={formLoading} error={errorMsg !== null} onSubmit={handleSubmit}>
+      <Form
+        loading={formLoading}
+        error={errorMsg !== null}
+        onSubmit={handleSubmit}
+      >
         <Message
           error
           header="Oops!"
@@ -183,25 +194,46 @@ function Signup() {
               name: "eye",
               circular: true,
               link: true,
-              onClick: () => setShowPassword(!showPassword)
+              onClick: () => setShowPassword(!showPassword),
             }}
             iconPosition="left"
             type={showPassword ? "text" : "password"}
             required
           />
 
-          <div ref={requiredFieldDiv} className="error required field">
+          <Form.Input
+            loading={usernameLoading}
+            error={!usernameAvailable}
+            required
+            label="Username"
+            placeholder="Username"
+            name="username"
+            value={username}
+            onChange={e => {
+              setUsername(e.target.value);
+              if (regexUserName.test(e.target.value)) {
+                setUsernameAvailable(true);
+              } else {
+                setUsernameAvailable(false);
+              }
+            }}
+            fluid
+            icon={usernameAvailable ? "check" : "close"}
+            iconPosition="left"
+          />
+
+          {/* <div ref={requiredFieldDiv} className="error required field">
             <label htmlFor="usernameInput">Username</label>
             <div ref={usernameInputDiv} className="ui fluid left icon input">
               <input
                 ref={usernameInput}
                 placeholder="Username"
                 required
-                onChange={e => checkUsername(e.target.value)}
+                onChange={(e) => checkUsername(e.target.value)}
               />
               <i aria-hidden="true" ref={leftIcon} className="close icon" />
             </div>
-          </div>
+          </div> */}
 
           <CommonInputs
             user={user}

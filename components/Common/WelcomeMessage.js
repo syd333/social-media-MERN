@@ -7,12 +7,11 @@ export const HeaderMessage = () => {
   const signupRoute = router.pathname === "/signup";
   return (
     <Message
+      color="teal"
       attached
       header={signupRoute ? "Get Started" : "Welcome Back!"}
       icon={signupRoute ? "settings" : "privacy"}
-      content={
-        signupRoute ? "Create New Account" : "Login with Email + Password"
-      }
+      content={signupRoute ? "Create New Account" : "Login"}
     />
   );
 };
@@ -36,14 +35,15 @@ export const FooterMessage = () => {
         <>
           <Message attached="bottom" info>
             <Icon name="lock" />
-            Existing user?
             <Link href="/rest">Forgot Password?</Link>
           </Message>
 
           <Message attached="bottom" warning>
             <Icon name="help" />
             New User?
-            <Link href="/signup">Signup here</Link>
+            <Link href="/signup" >
+              Signup here
+            </Link>
           </Message>
         </>
       )}
