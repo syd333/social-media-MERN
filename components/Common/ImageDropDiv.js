@@ -23,29 +23,48 @@ function ImageDropDiv({
             ref={inputRef}
           />
 
-          <div>
+          <div
+            onDragOver={(e) => {
+              e.preventDefault();
+              setHighlighted(true);
+            }}
+            onDragLeave={(e) => {
+              e.preventDefault();
+              setHighlighted(false);
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              setHighlighted(true);
+              const droppedFile = Array.from(e.dataTransfer.files);
+              setMedia(droppedFile[0]);
+              setMediaPreview(URL.createObjectURL(droppedFile[0]));
+            }}
+          >
             {mediaPreview === null ? (
               <>
-                <Segment
-                color={highlighted ? "green": "" }
-                  placeholder
-                  basic
-                >
-                 <Header icon>
-                     <Icon name="file image outline" style={{cursor:"pointer"}} onClick={}/>
-                     </Header>
+                <Segment color={highlighted ? "green" : ""} placeholder basic>
+                  <Header icon>
+                    <Icon
+                      name="file image outline"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => inputRef.current.click()}
+                    />
+                    Drag n Drop or Click to Upload Image
+                  </Header>
                 </Segment>
               </>
             ) : (
-              <Segment color="green" placeholder basic>
-                <Image
-                  src={mediaPreview}
-                  size="medium"
-                  centered
-                  style={{ cursor: "pointer" }}
-                  onClick={() => inputRef.current.click()}
-                />
-              </Segment>
+              <>
+                <Segment color="green" placeholder basic>
+                  <Image
+                    src={mediaPreview}
+                    size="medium"
+                    centered
+                    style={{ cursor: "pointer" }}
+                    onClick={() => inputRef.current.click()}
+                  />
+                </Segment>
+              </>
             )}
           </div>
         </Segment>

@@ -8,9 +8,11 @@ import {
 } from "../components/Common/WelcomeMessage";
 import axios from "axios";
 // import baseUrl from "../utils/baseUrl";
-import { registerUser } from "../utils/authUser";
+// import { registerUser } from "../utils/authUser";
 // import uploadPic from "../utils/uploadPicToCloudinary";
-let controller = null;
+// let controller = null;
+
+const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
 function Signup() {
   const [user, setUser] = useState({
@@ -49,10 +51,6 @@ function Signup() {
   const [usernameLoading, setUsernameLoading] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState(false);
 
-  // const usernameInputDiv = useRef();
-  // const requiredFieldDiv = useRef();
-  // const usernameInput = useRef();
-  // const leftIcon = useRef();
 
   const [media, setMedia] = useState(null);
   const [mediaPreview, setMediaPreview] = useState(null);
@@ -65,6 +63,25 @@ function Signup() {
     );
     isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
   }, [user]);
+
+  // const checkUsername = async () => {
+
+  //   setUsernameLoading(true)
+  //   try {
+  //     const res = await axios.get(`${baseUrl}/api/signup/${username}`);
+  //     if (res.data === "Available") setUsernameAvailable(true);
+  //     setUser((prev) => ({ ...prev, username }));
+
+
+  //   } catch (error) {
+  //     setErrorMsg("Username Not Available");
+  //   }
+  //    setUsernameLoading(false);
+  // };
+
+  // useEffect(() => {
+  //   username === "" ? setUsernameAvailable(false) : checkUsername();
+  // }, [username]);
 
   // const checkUsername = async (value = "") => {
   //   if (value.length === 0 || value.trim().length === 0) {
@@ -111,27 +128,27 @@ function Signup() {
   //   controller = null;
   // };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  //   if (requiredFieldDiv.current.classList.contains("error")) {
-  //     return setErrorMsg("Username not available");
-  //   }
+    // if (requiredFieldDiv.current.classList.contains("error")) {
+    //   return setErrorMsg("Username not available");
+    // }
 
-  //   setFormLoading(true);
+    // setFormLoading(true);
 
-  //   let profilePicUrl;
-  //   if (media !== null) {
-  //     profilePicUrl = await uploadPic(media);
-  //   }
+    // let profilePicUrl;
+    // if (media !== null) {
+    //   profilePicUrl = await uploadPic(media);
+    // }
 
-  //   if (media !== null && !profilePicUrl) {
-  //     setFormLoading(false);
-  //     return setErrorMsg("Error Uploading Image");
-  //   }
+    // if (media !== null && !profilePicUrl) {
+    //   setFormLoading(false);
+    //   return setErrorMsg("Error Uploading Image");
+    // }
 
-  //   await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
-  // };
+    // await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
+  };
 
   return (
     <>
@@ -209,7 +226,7 @@ function Signup() {
             placeholder="Username"
             name="username"
             value={username}
-            onChange={e => {
+            onChange={(e) => {
               setUsername(e.target.value);
               if (regexUserName.test(e.target.value)) {
                 setUsernameAvailable(true);
