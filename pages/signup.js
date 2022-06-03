@@ -8,11 +8,12 @@ import {
 } from "../components/Common/WelcomeMessage";
 import axios from "axios";
 // import baseUrl from "../utils/baseUrl";
-// import { registerUser } from "../utils/authUser";
-// import uploadPic from "../utils/uploadPicToCloudinary";
+import { registerUser } from "../utils/authUser";
+import uploadPic from "../utils/uploadPicToCloudinary";
 // let controller = null;
 
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
+let cancel;
 
 function Signup() {
   const [user, setUser] = useState({
@@ -51,7 +52,6 @@ function Signup() {
   const [usernameLoading, setUsernameLoading] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState(false);
 
-
   const [media, setMedia] = useState(null);
   const [mediaPreview, setMediaPreview] = useState(null);
   const [highlighted, setHighlighted] = useState(false);
@@ -64,90 +64,48 @@ function Signup() {
     isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
   }, [user]);
 
-  // const checkUsername = async () => {
+  const checkUsername = async () => {
+    setUsernameLoading(true);
+    try {
+      cancel && cancel();
+      const CancelToken = axios.CancelToken;
 
-  //   setUsernameLoading(true)
-  //   try {
-  //     const res = await axios.get(`${baseUrl}/api/signup/${username}`);
-  //     if (res.data === "Available") setUsernameAvailable(true);
-  //     setUser((prev) => ({ ...prev, username }));
+      const res = await axios.get(
+        `http://localhost:3000/api/signup/${username}`,
+        {
+          cancelToken: new CancelToken((canceler) => {
+            cancel = canceler;
+          }),
+        }
+      );
+      if (res.data === "Available") setUsernameAvailable(true);
+      setUser((prev) => ({ ...prev, username }));
+    } catch (error) {
+      setErrorMsg("Username Not Available");
+    }
+    setUsernameLoading(false);
+  };
 
-
-  //   } catch (error) {
-  //     setErrorMsg("Username Not Available");
-  //   }
-  //    setUsernameLoading(false);
-  // };
-
-  // useEffect(() => {
-  //   username === "" ? setUsernameAvailable(false) : checkUsername();
-  // }, [username]);
-
-  // const checkUsername = async (value = "") => {
-  //   if (value.length === 0 || value.trim().length === 0) {
-  //     if (!requiredFieldDiv.current.classList.contains("error")) {
-  //       requiredFieldDiv.current.classList.add("error");
-  //     }
-
-  //     leftIcon.current.className = "close icon";
-  //     return;
-  //   }
-
-  //   usernameInput.current.value = value;
-
-  //   usernameInputDiv.current.classList.add("loading");
-
-  //   try {
-  //     if (controller) controller.abort();
-
-  //     controller = new AbortController();
-
-  //     const res = await axios.get(`${baseUrl}/api/signup/${value}`, {
-  //       signal: controller.signal,
-  //     });
-
-  //     if (res.data === "Available") {
-  //       if (requiredFieldDiv.current.classList.contains("error")) {
-  //         requiredFieldDiv.current.classList.remove("error");
-  //       }
-
-  //       leftIcon.current.className = "check icon";
-  //       setUser((prev) => ({ ...prev, username: value }));
-  //     }
-  //   } catch (error) {
-  //     setErrorMsg("Username Not Available");
-
-  //     if (!requiredFieldDiv.current.classList.contains("error")) {
-  //       requiredFieldDiv.current.classList.add("error");
-  //     }
-
-  //     leftIcon.current.className = "close icon";
-  //   }
-
-  //   usernameInputDiv.current.classList.remove("loading");
-  //   controller = null;
-  // };
+  useEffect(() => {
+    username === "" ? setUsernameAvailable(false) : checkUsername();
+  }, [username]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // if (requiredFieldDiv.current.classList.contains("error")) {
-    //   return setErrorMsg("Username not available");
-    // }
+    setFormLoading(true);
 
-    // setFormLoading(true);
+    let profilePicUrl;
+    if (media !== null) {
+      profilePicUrl = await uploadPic(media);
+    }
 
-    // let profilePicUrl;
-    // if (media !== null) {
-    //   profilePicUrl = await uploadPic(media);
-    // }
+    if (media !== null && !profilePicUrl) {
+      setFormLoading(false);
+      return setErrorMsg("Error Uploading Image");
+    }
 
-    // if (media !== null && !profilePicUrl) {
-    //   setFormLoading(false);
-    //   return setErrorMsg("Error Uploading Image");
-    // }
-
-    // await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
+    await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
   };
 
   return (
