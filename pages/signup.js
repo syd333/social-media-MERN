@@ -265,7 +265,7 @@ function Signup() {
             content="Signup"
             type="submit"
             color="orange"
-            disabled={submitDisabled}
+            disabled={submitDisabled || !usernameAvailable}
           />
         </Segment>
       </Form>

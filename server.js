@@ -8,13 +8,13 @@ const handle = nextApp.getRequestHandler();
 require("dotenv").config({ path: "./config.env" });
 const connectDb = require("./utilsServer/connectDb");
 connectDb();
-
-const PORT = process.env.PORT || 3000;
 app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
 nextApp.prepare().then(() => {
-  // app.use("/api/signup", require("./api/signup"));
-  // app.use("/api/auth", require("./api/auth"));
+  app.use("/api/signup", require("./api/signup"));
+  app.use("/api/auth", require("./api/auth"));
+
 
   app.all("*", (req, res) => handle(req, res));
 

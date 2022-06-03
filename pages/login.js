@@ -11,6 +11,7 @@ function Login() {
   });
 
   const { email, password } = user;
+  
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [formLoading, setFormLoading] = useState(false);
