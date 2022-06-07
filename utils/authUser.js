@@ -24,11 +24,6 @@ export const registerUser = async (
   setLoading(false);
 };
 
-const setToken = (token) => {
-  cookie.set("token", token);
-  Router.push("/");
-};
-
 export const loginUser = async (user, setError, setLoading) => {
   setLoading(true);
   try {
@@ -42,17 +37,23 @@ export const loginUser = async (user, setError, setLoading) => {
   setLoading(false);
 };
 
-// export const redirectUser = (ctx, location) => {
-//   if (ctx.req) {
-//     ctx.res.writeHead(302, { Location: location });
-//     ctx.res.end();
-//   } else {
-//     window.location.href = location;
-//   }
-// };
+export const redirectUser = (ctx, location) => {
+  if (ctx.req) {
+    ctx.res.writeHead(302, { Location: location });
+    ctx.res.end();
+  } else {
+    window.location.href = location;
+  }
+};
 
-// export const logoutUser = (email) => {
-//   cookie.set("userEmail", email);
-//   cookie.remove("token");
-//   window.location.href = "/login";
-// };
+const setToken = (token) => {
+  cookie.set("token", token);
+  Router.push("/");
+};
+
+export const logoutUser = (email) => {
+  cookie.set("userEmail", email);
+  cookie.remove("token");
+  Router.push("/login");
+  Router.reload();
+};
