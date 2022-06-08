@@ -14,13 +14,14 @@ import calculateTime from "../../utils/calculateTime";
 import PostComments from "./PostComments";
 import CommentInputField from "./CommentInputField";
 import Link from "next/link";
-import { deletePost } from "../../utils/postActions";
+import { deletePost, likePost } from "../../utils/postActions";
 
-function CardPost({ post, user, setPosts, setShowToastr}) {
-const [likes, setLikes] = useState(post.likes);
+function CardPost({ post, user, setPosts, setShowToastr }) {
+  const [likes, setLikes] = useState(post.likes);
 
   const isLiked =
-    likes.length > 0 && likes.filter(like => like.user === user._id).length > 0;
+    likes.length > 0 &&
+    likes.filter((like) => like.user === user._id).length > 0;
 
   const [comments, setComments] = useState(post.comments);
   const [error, setError] = useState(null);
@@ -33,7 +34,7 @@ const [likes, setLikes] = useState(post.likes);
     likes,
     isLiked,
     comments,
-    setComments
+    setComments,
   };
 
   return (
@@ -70,7 +71,12 @@ const [likes, setLikes] = useState(post.likes);
           )}
 
           <Card.Content>
-            <Image floated="left" src={post.user.profilePicUrl} avatar circular />
+            <Image
+              floated="left"
+              src={post.user.profilePicUrl}
+              avatar
+              circular
+            />
 
             {(user.role === "root" || post.user._id === user._id) && (
               <>
@@ -93,7 +99,9 @@ const [likes, setLikes] = useState(post.likes);
                     color="red"
                     icon="trash"
                     content="Delete"
-                    onClick={() => deletePost(post._id, setPosts, setShowToastr)}
+                    onClick={() =>
+                      deletePost(post._id, setPosts, setShowToastr)
+                    }
                   />
                 </Popup>
               </>
@@ -113,7 +121,7 @@ const [likes, setLikes] = useState(post.likes);
               style={{
                 fontSize: "17px",
                 letterSpacing: "0.1px",
-                wordSpacing: "0.35px"
+                wordSpacing: "0.35px",
               }}
             >
               {post.text}
@@ -125,6 +133,9 @@ const [likes, setLikes] = useState(post.likes);
               name={isLiked ? "heart" : "heart outline"}
               color="red"
               style={{ cursor: "pointer" }}
+              onClick={() =>
+                likePost(post._id, user._id, setLikes, isLiked ? false : true)
+              }
               // onClick={() => {
               //   if (socket.current) {
               //     socket.current.emit("likePost", {
@@ -137,7 +148,7 @@ const [likes, setLikes] = useState(post.likes);
               //       if (isLiked) {
               //         setLikes(prev => prev.filter(like => like.user !== user._id));
               //       }
-              //       
+              //
               //       else {
               //         setLikes(prev => [...prev, { user: user._id }]);
               //       }
@@ -148,14 +159,17 @@ const [likes, setLikes] = useState(post.likes);
               // }}
             />
 
-         {likes.length > 0 && (
-                  <span className="spanLikesList">
-                    {`${likes.length} ${likes.length === 1 ? "like" : "likes"}`}
-                  </span>
-                )
-              }
+            {likes.length > 0 && (
+              <span className="spanLikesList">
+                {`${likes.length} ${likes.length === 1 ? "like" : "likes"}`}
+              </span>
+            )}
 
-            <Icon name="comment outline" style={{ marginLeft: "7px" }} color="blue" />
+            <Icon
+              name="comment outline"
+              style={{ marginLeft: "7px" }}
+              color="blue"
+            />
 
             {comments.length > 0 &&
               comments.map(
@@ -193,7 +207,7 @@ const [likes, setLikes] = useState(post.likes);
       </Segment>
       <Divider hidden />
     </>
-  )
+  );
 }
 
 export default CardPost;

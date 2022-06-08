@@ -4,9 +4,10 @@ import axios from "axios";
 import { parseCookies, destroyCookie } from "nookies";
 import { redirectUser } from "../utils/authUser";
 import Layout from "../components/Layout/Layout";
+import "react-toastify/dist/ReactToastify.css";
 import "semantic-ui-css/semantic.min.css";
 
-function MernApp({Component, pageProps}) {
+function MernApp({ Component, pageProps }) {
   return (
     <>
       <Head>
@@ -42,7 +43,7 @@ MernApp.getInitialProps = async ({ Component, ctx }) => {
       const getFollowingData =
         ctx.pathname === "/notifications" || ctx.pathname === "/[username]";
 
-      const res = await axios.get('http://localhost:3000/api/auth', {
+      const res = await axios.get("http://localhost:3000/api/auth", {
         headers: { Authorization: token, getFollowingData },
         params: { getFollowingData },
       });

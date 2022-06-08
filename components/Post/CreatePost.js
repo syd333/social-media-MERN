@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Image, Divider, Message, Icon } from "semantic-ui-react";
 import uploadPic from "../../utils/uploadPicToCloudinary";
-// import { submitNewPost } from "../../utils/postActions";
+import { submitNewPost } from "../../utils/postActions";
 // import CropImageModal from "./CropImageModal";
 
 function CreatePost({ user, setPosts }) {
@@ -54,7 +54,6 @@ function CreatePost({ user, setPosts }) {
     }
 
     await submitNewPost(
-      user,
       newPost.text,
       newPost.location,
       picUrl,

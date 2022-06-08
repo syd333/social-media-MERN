@@ -4,7 +4,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 const UserModel = require("../models/UserModel");
 const PostModel = require("../models/PostModel");
 const FollowerModel = require("../models/FollowerModel");
-const uuid = require("uuid").v4
+const uuid = require("uuid").v4;
 
 router.post("/", authMiddleware, async (req, res) => {
   const { text, location, picUrl } = req.body;
@@ -22,7 +22,8 @@ router.post("/", authMiddleware, async (req, res) => {
     if (picUrl) newPost.picUrl = picUrl;
 
     const post = await new PostModel(newPost).save();
-    return res.json(post._id);
+    const postCreated = await PostModel.findById(post._id).populate("user");
+    return res.json(postCreated);
   } catch (error) {
     console.log(error);
     return res.status(500).send(`Server error`);
@@ -89,7 +90,6 @@ router.delete("/:postId", authMiddleware, async (req, res) => {
     return res.status(500).send(`Server error`);
   }
 });
-
 
 // like a post
 router.post("/like/:postId", authMiddleware, async (req, res) => {
@@ -164,7 +164,7 @@ router.put("/unlike/:postId", authMiddleware, async (req, res) => {
   }
 });
 
-//get all likes 
+//get all likes
 router.get("/like/:postId", authMiddleware, async (req, res) => {
   try {
     const { postId } = req.params;
@@ -250,16 +250,16 @@ router.delete("/:postId/:commentId", authMiddleware, async (req, res) => {
 
       await post.save();
 
-    //   const postByUserId = post.user.toString();
+      //   const postByUserId = post.user.toString();
 
-    //   if (postByUserId !== userId) {
-    //     await removeCommentNotification(
-    //       postId,
-    //       commentId,
-    //       userId,
-    //       postByUserId
-    //     );
-    //   }
+      //   if (postByUserId !== userId) {
+      //     await removeCommentNotification(
+      //       postId,
+      //       commentId,
+      //       userId,
+      //       postByUserId
+      //     );
+      //   }
 
       return res.status(200).send("Deleted Successfully");
     };
@@ -278,6 +278,5 @@ router.delete("/:postId/:commentId", authMiddleware, async (req, res) => {
     return res.status(500).send(`Server error`);
   }
 });
-
 
 module.exports = router;
