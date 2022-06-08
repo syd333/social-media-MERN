@@ -28,6 +28,7 @@ router.post("/", authMiddleware, async (req, res) => {
     return res.status(500).send(`Server error`);
   }
 });
+
 //get all posts
 router.get("/", authMiddleware, async (req, res) => {
   try {
