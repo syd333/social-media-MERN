@@ -58,7 +58,11 @@ function ProfilePage({
       setLoading(false);
     };
     getPosts();
-  }, []);
+  }, [router.query.username]);
+
+  useEffect(() => {
+    showToastr && setTimeout(() => setShowToastr(false), 4000);
+  }, [showToastr]);
 
   if (errorLoading) return <NoProfile />;
 
@@ -66,6 +70,7 @@ function ProfilePage({
 
   return (
     <>
+      {showToastr && <PostDeleteToastr />}
       <Grid stackable>
         <Grid.Row>
           <Grid.Column>
@@ -96,7 +101,7 @@ function ProfilePage({
                 ) : posts.length > 0 ? (
                   posts.map((post) => (
                     <CardPost
-                    //   socket={socket}
+                      //   socket={socket}
                       key={post._id}
                       post={post}
                       user={user}
