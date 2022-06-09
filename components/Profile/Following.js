@@ -1,7 +1,110 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Button, Image, List } from "semantic-ui-react";
+import Spinner from "../Layout/Spinner";
+import { NoFollowData } from "../Layout/NoData";
+import { followUser, unfollowUser } from "../../utils/profileActions";
+import axios from "axios";
+import cookie from "js-cookie";
 
-function Following() {
-  return <div>Following</div>;
+function Following({
+  user,
+  loggedUserFollowStats,
+  setUserFollowStats,
+  profileUserId,
+}) {
+  const [following, setFollowing] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false);
+
+  useEffect(() => {
+    const getFollowing = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/api/profile/following/${profileUserId}`,
+          {
+            headers: { Authorization: cookie.get("token") },
+          }
+        );
+
+        setFollowing(res.data);
+      } catch (error) {
+        alert("Error Loading Followers");
+      }
+      setLoading(false);
+    };
+
+    getFollowing();
+  }, []);
+
+  return (
+    <>
+      {loading ? (
+        <Spinner />
+      ) : following.length > 0 ? (
+        following.map((profileFollowing) => {
+          /*  */
+
+          // const isFollowing =
+          //   loggedUserFollowStats.following.length > 0 &&
+          //   loggedUserFollowStats.following.some(
+          //     (following) => following.user === profileFollower.user._id
+          //   );
+
+          const isFollowing =
+            loggedUserFollowStats.following.length > 0 &&
+            loggedUserFollowStats.following.filter(
+              (following) => following.user === profileFollowing.user._id
+            ).length > 0;
+
+          return (
+            <List
+              key={profileFollowing.user._id}
+              divided
+              verticalAlign="middle"
+            >
+              <List.Item>
+                <List.Content floated="right">
+                  {profileFollowing.user._id !== user._id && (
+                    <Button
+                      color={isFollowing ? "instagram" : "twitter"}
+                      icon={isFollowing ? "check" : "add user"}
+                      content={isFollowing ? "Following" : "Follow"}
+                      disabled={followLoading}
+                      onClick={() => {
+                        setFollowLoading(true);
+
+                        isFollowing
+                          ? unfollowUser(
+                              profileFollowing.user._id,
+                              setUserFollowStats
+                            )
+                          : followUser(
+                              profileFollowing.user._id,
+                              setUserFollowStats
+                            );
+
+                        setFollowLoading(false);
+                      }}
+                    />
+                  )}
+                </List.Content>
+                <Image avatar src={profileFollowing.user.profilePicUrl} />
+                <List.Content
+                  as="a"
+                  href={`/${profileFollowing.user.username}`}
+                >
+                  {profileFollowing.user.name}
+                </List.Content>
+              </List.Item>
+            </List>
+          );
+        })
+      ) : (
+        <NoFollowData followingComponent={true} />
+      )}
+    </>
+  );
 }
 
 export default Following;
