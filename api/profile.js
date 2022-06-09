@@ -294,7 +294,7 @@ router.post("/settings/messagePopup", authMiddleware, async (req, res) => {
     }
 
     await user.save();
-    return res.status(200).send("updated");
+    return res.status(200).send("updated settings");
   } catch (error) {
     console.error(error);
     return res.status(500).send("Server Error");
