@@ -71,15 +71,15 @@ function Following({
                       icon={isFollowing ? "check" : "add user"}
                       content={isFollowing ? "Following" : "Follow"}
                       disabled={followLoading}
-                      onClick={() => {
+                      onClick={ async () => {
                         setFollowLoading(true);
 
                         isFollowing
-                          ? unfollowUser(
+                          ? await unfollowUser(
                               profileFollowing.user._id,
                               setUserFollowStats
                             )
-                          : followUser(
+                          : await followUser(
                               profileFollowing.user._id,
                               setUserFollowStats
                             );
