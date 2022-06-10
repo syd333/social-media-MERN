@@ -273,7 +273,7 @@ router.post("/settings/password", authMiddleware, async (req, res) => {
     user.password = await bcrypt.hash(newPassword, 10);
     await user.save();
 
-    res.status(200).send("Password Updated successfully");
+    res.status(200).send("Password Updated Successfully");
   } catch (error) {
     console.error(error);
     return res.status(500).send("Server Error");

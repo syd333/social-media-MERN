@@ -73,10 +73,12 @@ export const passwordUpdate = async (setSuccess, userPasswords) => {
 };
 
 export const toggleMessagePopup = async (setPopupSetting, setSuccess) => {
+    //should popupSetting be in params?
   try {
     await Axios.post(`/settings/messagePopup`);
 
     setPopupSetting((prev) => !prev);
+    // setPopupSetting(!popupSetting)
     setSuccess(true);
   } catch (error) {
     alert(catchErrors(error));
