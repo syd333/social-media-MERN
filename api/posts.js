@@ -8,6 +8,8 @@ const uuid = require("uuid").v4;
 const {
   newLikeNotification,
   removeLikeNotification,
+  newCommentNotification,
+  removeCommentNotification,
 } = require("../utilsServer/notificationActions");
 
 router.post("/", authMiddleware, async (req, res) => {
@@ -269,17 +271,15 @@ router.post("/comment/:postId", authMiddleware, async (req, res) => {
     await post.comments.unshift(newComment);
     await post.save();
 
-    // const postByUserId = post.user.toString();
-
-    // if (postByUserId !== userId) {
-    //   await newCommentNotification(
-    //     postId,
-    //     newComment._id,
-    //     userId,
-    //     postByUserId,
-    //     text
-    //   );
-    // }
+    if (post.user.toString() !== userId) {
+      await newCommentNotification(
+        postId,
+        newComment._id,
+        userId,
+        post.user.toString(),
+        text
+      );
+    }
 
     return res.status(200).send(newComment._id);
   } catch (error) {
@@ -313,16 +313,14 @@ router.delete("/:postId/:commentId", authMiddleware, async (req, res) => {
 
       await post.save();
 
-      //   const postByUserId = post.user.toString();
-
-      //   if (postByUserId !== userId) {
-      //     await removeCommentNotification(
-      //       postId,
-      //       commentId,
-      //       userId,
-      //       postByUserId
-      //     );
-      //   }
+        if (post.user.toString() !== userId) {
+          await removeCommentNotification(
+            postId,
+            commentId,
+            userId,
+            post.user.toString()
+          );
+        }
 
       return res.status(200).send("Deleted Successfully");
     };
