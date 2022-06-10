@@ -5,6 +5,10 @@ const UserModel = require("../models/UserModel");
 const PostModel = require("../models/PostModel");
 const FollowerModel = require("../models/FollowerModel");
 const uuid = require("uuid").v4;
+const {
+  newLikeNotification,
+  removeLikeNotification,
+} = require("../utilsServer/notificationActions");
 
 router.post("/", authMiddleware, async (req, res) => {
   const { text, location, picUrl } = req.body;
@@ -49,8 +53,11 @@ router.get("/", authMiddleware, async (req, res) => {
       if (loggedUser.following.length > 0) {
         posts = await PostModel.find({
           user: {
-            $in: [userId, ...loggedUser.following.map(following => following.user)]
-          }
+            $in: [
+              userId,
+              ...loggedUser.following.map((following) => following.user),
+            ],
+          },
         })
           .limit(size)
           .sort({ createdAt: -1 })
@@ -74,8 +81,11 @@ router.get("/", authMiddleware, async (req, res) => {
       if (loggedUser.following.length > 0) {
         posts = await PostModel.find({
           user: {
-            $in: [userId, ...loggedUser.following.map(following => following.user)]
-          }
+            $in: [
+              userId,
+              ...loggedUser.following.map((following) => following.user),
+            ],
+          },
         })
           .skip(skips)
           .limit(size)
@@ -100,7 +110,6 @@ router.get("/", authMiddleware, async (req, res) => {
     return res.status(500).send(`Server error`);
   }
 });
-
 
 //get post by Id
 router.get("/:postId", authMiddleware, async (req, res) => {
@@ -170,11 +179,9 @@ router.post("/like/:postId", authMiddleware, async (req, res) => {
     await post.likes.unshift({ user: userId });
     await post.save();
 
-    // const postByUserId = post.user.toString();
-
-    // if (postByUserId !== userId) {
-    //   await newLikeNotification(userId, postId, postByUserId);
-    // }
+    if (post.user.toString() !== userId) {
+      await newLikeNotification(userId, postId, post.user.toString());
+    }
 
     return res.status(200).send("Post liked");
   } catch (error) {
@@ -209,11 +216,9 @@ router.put("/unlike/:postId", authMiddleware, async (req, res) => {
 
     await post.save();
 
-    // const postByUserId = post.user.toString();
-
-    // if (postByUserId !== userId) {
-    //   await removeLikeNotification(userId, postId, postByUserId);
-    // }
+    if (post.user.toString() !== userId) {
+      await removeLikeNotification(userId, postId, post.user.toString());
+    }
 
     return res.status(200).send("Post Unliked");
   } catch (error) {
