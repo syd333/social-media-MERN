@@ -3,6 +3,7 @@ const router = express.Router();
 const UserModel = require("../models/UserModel");
 const ProfileModel = require("../models/ProfileModel");
 const FollowerModel = require("../models/FollowerModel");
+const NotificationModel = require("../models/NotificationModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const isEmail = require("validator/lib/isEmail");
@@ -12,11 +13,11 @@ const userPng =
 
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
-router.get('/:username', async (req,res) => {
-    const { username } = req.params;
-    console.log(req.params)
+router.get("/:username", async (req, res) => {
+  const { username } = req.params;
+  console.log(req.params);
 
-      try {
+  try {
     if (username.length < 1) return res.status(401).send("Invalid");
     if (!regexUserName.test(username)) return res.status(401).send("Invalid");
 
@@ -28,9 +29,7 @@ router.get('/:username', async (req,res) => {
     console.error(error);
     return res.status(500).send(`Server error`);
   }
-})
-
-
+});
 
 router.post("/", async (req, res) => {
   const {
@@ -63,7 +62,7 @@ router.post("/", async (req, res) => {
       email: email.toLowerCase(),
       username: username.toLowerCase(),
       password,
-      profilePicUrl: req.body.profilePicUrl || userPng
+      profilePicUrl: req.body.profilePicUrl || userPng,
     });
 
     user.password = await bcrypt.hash(password, 10);
@@ -86,11 +85,11 @@ router.post("/", async (req, res) => {
       followers: [],
       following: [],
     }).save();
-//     await new NotificationModel({
-//       user: user._id,
-//       notifications: [],
-//     }).save();
-//     await new ChatModel({ user: user._id, chats: [] }).save();
+    await new NotificationModel({
+      user: user._id,
+      notifications: [],
+    }).save();
+    // await new ChatModel({ user: user._id, chats: [] }).save();
 
     const payload = { userId: user._id };
     jwt.sign(

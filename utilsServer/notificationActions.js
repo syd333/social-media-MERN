@@ -192,4 +192,6 @@ module.exports = {
   removeLikeNotification,
   newCommentNotification,
   removeCommentNotification,
+  newFollowerNotification,
+  removeFollowerNotification,
 };
