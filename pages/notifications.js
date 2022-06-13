@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { parseCookies } from "nookies";
 import cookie from "js-cookie";
@@ -8,7 +8,9 @@ import LikeNotification from "../components/Notifications/LikeNotification";
 import CommentNotification from "../components/Notifications/CommentNotification";
 import FollowerNotification from "../components/Notifications/FollowerNotification";
 
-function Notifications({ notifications, errorLoading }) {
+function Notifications({ notifications, errorLoading, user, userFollowStats }) {
+  const [loggedUserFollowStats, setUserFollowStats] = useState(userFollowStats);
+
   useEffect(() => {
     const notificationRead = async () => {
       try {
@@ -27,7 +29,7 @@ function Notifications({ notifications, errorLoading }) {
     };
   }, []);
 
-  console.log(notifications);
+  //   console.log(notifications);
   return (
     <Container style={{ marginTop: "1.5rem" }}>
       {notifications.length > 0 ? (
@@ -46,7 +48,10 @@ function Notifications({ notifications, errorLoading }) {
                 <Fragment key={notification._id}>
                   {notification.type === "newLike" &&
                     notification.post !== null && (
-                      <LikeNotification notification={notification} />
+                      <LikeNotification
+                        user={user}
+                        notification={notification}
+                      />
                     )}
 
                   {notification.type === "newComment" &&
