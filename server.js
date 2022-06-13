@@ -25,6 +25,8 @@ io.on("connection", (socket) => {
     async ({ userId }) => {
       const users = await addUser(userId, socket.id);
 
+      console.log(users);
+
       setInterval(() => {
         socket.emit("connectedUsers", {
           users: users.filter((user) => user.userId !== userId),
@@ -33,6 +35,11 @@ io.on("connection", (socket) => {
     },
     10000
   );
+
+  socket.on("disconnect", () => {
+    removeUser(socket.id);
+    console.log("user disconnected");
+  });
 });
 
 nextApp.prepare().then(() => {

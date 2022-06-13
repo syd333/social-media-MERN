@@ -46,6 +46,12 @@ function Messages({ chatsData, user }) {
         });
       }
     }
+    return () => {
+      if (socket.current) {
+        socket.current.emit("disconnect");
+        socket.current.off();
+      }
+    };
   }, []);
 
   return (
@@ -76,7 +82,7 @@ function Messages({ chatsData, user }) {
                         key={chat.messagesWith}
                         chat={chat}
                         setChats={setChats}
-                        // connectedUsers={connectedUsers}
+                        connectedUsers={connectedUsers}
                         // deleteChat={deleteChat}
                       />
                     ))}
