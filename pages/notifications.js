@@ -1,8 +1,9 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { Feed, Segment, Divider, Container } from "semantic-ui-react";
 import axios from "axios";
+import baseUrl from "../utils/baseUrl";
 import { parseCookies } from "nookies";
 import cookie from "js-cookie";
-import { Feed, Segment, Divider, Container } from "semantic-ui-react";
 import { NoNotifications } from "../components/Layout/NoData";
 import LikeNotification from "../components/Notifications/LikeNotification";
 import CommentNotification from "../components/Notifications/CommentNotification";
@@ -12,24 +13,19 @@ function Notifications({ notifications, errorLoading, user, userFollowStats }) {
   const [loggedUserFollowStats, setUserFollowStats] = useState(userFollowStats);
 
   useEffect(() => {
-    const notificationRead = async () => {
+    (async () => {
       try {
         await axios.post(
-          "http:localhost:3000/api/notifications",
+          `http://localhost:3000/api/notifications`,
           {},
           { headers: { Authorization: cookie.get("token") } }
         );
       } catch (error) {
         console.log(error);
       }
-    };
-
-    return () => {
-      notificationRead();
-    };
+    })();
   }, []);
 
-  //   console.log(notifications);
   return (
     <Container style={{ marginTop: "1.5rem" }}>
       {notifications.length > 0 ? (
@@ -48,10 +44,7 @@ function Notifications({ notifications, errorLoading, user, userFollowStats }) {
                 <Fragment key={notification._id}>
                   {notification.type === "newLike" &&
                     notification.post !== null && (
-                      <LikeNotification
-                        user={user}
-                        notification={notification}
-                      />
+                      <LikeNotification notification={notification} />
                     )}
 
                   {notification.type === "newComment" &&
@@ -79,11 +72,12 @@ function Notifications({ notifications, errorLoading, user, userFollowStats }) {
   );
 }
 
+
 export const getServerSideProps = async (ctx) => {
   try {
     const { token } = parseCookies(ctx);
 
-    const res = await axios.get("http://localhost:3000/api/notifications", {
+    const res = await axios.get(`http://localhost:3000/api/notifications`, {
       headers: { Authorization: token },
     });
 
