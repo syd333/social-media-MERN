@@ -18,6 +18,7 @@ import cookie from "js-cookie";
 
 function Messages({ chatsData, user }) {
   const [chats, setChats] = useState(chatsData);
+  const [connectedUsers, setConnectedUsers] = useState([]);
 
   const router = useRouter();
   const socket = useRef();
@@ -28,16 +29,16 @@ function Messages({ chatsData, user }) {
     }
 
     if (socket.current) {
-      //   socket.current.emit("join", { userId: user._id });
-      socket.current.emit("helloworld", { name: "babyred", age: "22" });
+      socket.current.emit("join", { userId: user._id });
+      //   socket.current.emit("helloworld", { name: "babyred", age: "22" });
 
-      //   socket.current.on("connectedUsers", ({ users }) => {
-      //     users.length > 0 && setConnectedUsers(users);
-      //   });
+      socket.current.on("connectedUsers", ({ users }) => {
+        users.length > 0 && setConnectedUsers(users);
+      });
 
-        socket.current.on("dataReceived", ({ msg }) => {
-          console.log(msg)
-        });
+      // socket.current.on("dataReceived", ({ msg }) => {
+      //   console.log(msg)
+      // });
 
       if (chats.length > 0 && !router.query.message) {
         router.push(`/messages?message=${chats[0].messagesWith}`, undefined, {

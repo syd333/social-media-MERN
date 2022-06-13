@@ -11,15 +11,28 @@ const connectDb = require("./utilsServer/connectDb");
 connectDb();
 app.use(express.json());
 const PORT = process.env.PORT || 3000;
+const { addUser, removeUser } = require("./utilsServer/roomActions");
 
 io.on("connection", (socket) => {
-  socket.on("helloworld", ({name, age}) => {
-    console.log({ name, age });
-  
-    socket.emit("dataReceived", {msg: `hello ${name} data received`})
-  
-  });
+  // socket.on("helloworld", ({ name, age }) => {
+  //   console.log({ name, age });
 
+  //   socket.emit("dataReceived", { msg: `hello ${name} data received` });
+  // });
+
+  socket.on(
+    "join",
+    async ({ userId }) => {
+      const users = await addUser(userId, socket.id);
+
+      setInterval(() => {
+        socket.emit("connectedUsers", {
+          users: users.filter((user) => user.userId !== userId),
+        });
+      });
+    },
+    10000
+  );
 });
 
 nextApp.prepare().then(() => {
