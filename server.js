@@ -11,8 +11,16 @@ const connectDb = require("./utilsServer/connectDb");
 connectDb();
 app.use(express.json());
 const PORT = process.env.PORT || 3000;
-const { addUser, removeUser } = require("./utilsServer/roomActions");
-const { loadMessages, sendMsg } = require("./utilsServer/messageActions");
+const {
+  addUser,
+  removeUser,
+  findConnectedUser,
+} = require("./utilsServer/roomActions");
+const {
+  loadMessages,
+  sendMsg,
+  setMsgToUnread,
+} = require("./utilsServer/messageActions");
 
 io.on("connection", (socket) => {
   // socket.on("helloworld", ({ name, age }) => {
@@ -42,25 +50,25 @@ io.on("connection", (socket) => {
 
     if (!error) {
       socket.emit("messagesLoaded", { chat });
+    } else {
+      socket.emit("noChatFound");
     }
-    //  ?
-    //  : socket.emit("noChatFound");
   });
 
-   socket.on("sendNewMsg", async ({ userId, msgSendToUserId, msg }) => {
-     const { newMsg, error } = await sendMsg(userId, msgSendToUserId, msg);
-     const receiverSocket = findConnectedUser(msgSendToUserId);
+  socket.on("sendNewMsg", async ({ userId, msgSendToUserId, msg }) => {
+    const { newMsg, error } = await sendMsg(userId, msgSendToUserId, msg);
+    const receiverSocket = findConnectedUser(msgSendToUserId);
 
-     if (receiverSocket) {
-       // when you want to send a message to a  particular socket
-       io.to(receiverSocket.socketId).emit("newMsgReceived", { newMsg });
-     }
-     //
-     else {
-       await setMsgToUnread(msgSendToUserId);
-     }
-
-   });
+    if (receiverSocket) {
+      // when you want to send a message to a  particular socket
+      io.to(receiverSocket.socketId).emit("newMsgReceived", { newMsg });
+    }
+    //
+    else {
+      await setMsgToUnread(msgSendToUserId);
+    }
+    !error && socket.emit("msgSent", { newMsg });
+  });
 
   socket.on("disconnect", () => {
     removeUser(socket.id);
