@@ -1,5 +1,5 @@
 const ChatModel = require("../models/ChatModel");
-// const UserModel = require("../models/UserModel");
+const UserModel = require("../models/UserModel");
 
 const loadMessages = async (userId, messagesWith) => {
   try {
@@ -22,57 +22,57 @@ const loadMessages = async (userId, messagesWith) => {
   }
 };
 
-// const sendMsg = async (userId, msgSendToUserId, msg) => {
-//   try {
-//     // loggedin user (sender)
-//     const user = await ChatModel.findOne({ user: userId });
+const sendMsg = async (userId, msgSendToUserId, msg) => {
+  try {
+    // logged in user (sender)
+    const user = await ChatModel.findOne({ user: userId });
 
-//     // receiver
-//     const msgSendToUser = await ChatModel.findOne({ user: msgSendToUserId });
+    // receiver
+    const msgSendToUser = await ChatModel.findOne({ user: msgSendToUserId });
 
-//     const newMsg = {
-//       sender: userId,
-//       receiver: msgSendToUserId,
-//       msg,
-//       date: Date.now(),
-//     };
+    const newMsg = {
+      sender: userId,
+      receiver: msgSendToUserId,
+      msg,
+      date: Date.now(),
+    };
 
-//     const previousChat = user.chats.find(
-//       (chat) => chat.messagesWith.toString() === msgSendToUserId
-//     );
+    const previousChat = user.chats.find(
+      (chat) => chat.messagesWith.toString() === msgSendToUserId
+    );
 
-//     if (previousChat) {
-//       previousChat.messages.push(newMsg);
-//       await user.save();
-//     }
-//     //
-//     else {
-//       const newChat = { messagesWith: msgSendToUserId, messages: [newMsg] };
-//       user.chats.unshift(newChat);
-//       await user.save();
-//     }
+    if (previousChat) {
+      previousChat.messages.push(newMsg);
+      await user.save();
+    }
+    //
+    else {
+      const newChat = { messagesWith: msgSendToUserId, messages: [newMsg] };
+      user.chats.unshift(newChat);
+      await user.save();
+    }
 
-//     const previousChatForReceiver = msgSendToUser.chats.find(
-//       (chat) => chat.messagesWith.toString() === userId
-//     );
+    const previousChatForReceiver = msgSendToUser.chats.find(
+      (chat) => chat.messagesWith.toString() === userId
+    );
 
-//     if (previousChatForReceiver) {
-//       previousChatForReceiver.messages.push(newMsg);
-//       await msgSendToUser.save();
-//     }
-//     //
-//     else {
-//       const newChat = { messagesWith: userId, messages: [newMsg] };
-//       msgSendToUser.chats.unshift(newChat);
-//       await msgSendToUser.save();
-//     }
+    if (previousChatForReceiver) {
+      previousChatForReceiver.messages.push(newMsg);
+      await msgSendToUser.save();
+    }
+    //
+    else {
+      const newChat = { messagesWith: userId, messages: [newMsg] };
+      msgSendToUser.chats.unshift(newChat);
+      await msgSendToUser.save();
+    }
 
-//     return { newMsg };
-//   } catch (error) {
-//     console.error(error);
-//     return { error };
-//   }
-// };
+    return { newMsg };
+  } catch (error) {
+    console.error(error);
+    return { error };
+  }
+};
 
 // const setMsgToUnread = async (userId) => {
 //   try {
@@ -123,4 +123,4 @@ const loadMessages = async (userId, messagesWith) => {
 //   }
 // };
 
-module.exports = { loadMessages };
+module.exports = { loadMessages, sendMsg };

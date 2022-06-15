@@ -15,6 +15,9 @@ import ChatListSearch from "../components/Chats/ChatListSearch";
 import { useRouter } from "next/router";
 import { NoMessages } from "../components/Layout/NoData";
 import cookie from "js-cookie";
+import Banner from "../components/Messages/Banner";
+import Message from "../components/Messages/Message";
+import MessageInputField from "../components/Messages/MessageInputField";
 
 function Messages({ chatsData, user }) {
   const [chats, setChats] = useState(chatsData);
@@ -28,6 +31,7 @@ function Messages({ chatsData, user }) {
   // ref is for persisting the state of query string in url through re-renders
   // this ref is jsut query string inside url
 
+  //connection
   useEffect(() => {
     if (!socket.current) {
       socket.current = io("http://localhost:3000");
@@ -59,6 +63,7 @@ function Messages({ chatsData, user }) {
     };
   }, []);
 
+  // load messages
   useEffect(() => {
     const loadMessages = () => {
       socket.current.emit("loadMessages", {
@@ -74,11 +79,42 @@ function Messages({ chatsData, user }) {
         name: chat.messagesWith.name,
         profilePicUrl: chat.messagesWith.profilePicUrl,
       });
-      openChatId.current = chat.messsagesWith._id;
+      openChatId.current = chat.messagesWith._id;
     });
 
     if (socket.current) loadMessages();
   }, [router.query.message]);
+
+  const sendMsg = (msg) => {
+    if (socket.current) {
+      socket.current.emit("sendNewMsg", {
+        userId: user._id,
+        msgSendToUserId: openChatId.current,
+        msg,
+      });
+    }
+  };
+
+  // Confirming msg is sent and receving the messages
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on("msgSent", ({ newMsg }) => {
+        if (newMsg.receiver === openChatId.current) {
+          setMessages((prev) => [...prev, newMsg]);
+
+          setChats((prev) => {
+            const previousChat = prev.find(
+              (chat) => chat.messagesWith === newMsg.receiver
+            );
+            previousChat.lastMessage = newMsg.msg;
+            previousChat.date = newMsg.date;
+
+            return [...prev];
+          });
+        }
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -116,7 +152,7 @@ function Messages({ chatsData, user }) {
                 </Comment.Group>
               </Grid.Column>
 
-              {/* <Grid.Column width={12}>
+              <Grid.Column width={12}>
                 {router.query.message && (
                   <>
                     <div
@@ -135,12 +171,14 @@ function Messages({ chatsData, user }) {
                       {messages.length > 0 &&
                         messages.map((message) => (
                           <Message
-                            divRef={divRef}
+                            // divRef={divRef}
                             key={message._id}
                             bannerProfilePic={bannerData.profilePicUrl}
                             message={message}
+                            setMessages={setMessages}
+                            messagesWith={openChatId.current}
                             user={user}
-                            deleteMsg={deleteMsg}
+                            // deleteMsg={deleteMsg}
                           />
                         ))}
                     </div>
@@ -148,7 +186,7 @@ function Messages({ chatsData, user }) {
                     <MessageInputField sendMsg={sendMsg} />
                   </>
                 )}
-              </Grid.Column> */}
+              </Grid.Column>
             </Grid>
           </>
         ) : (
