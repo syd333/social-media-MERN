@@ -18,10 +18,15 @@ import cookie from "js-cookie";
 
 function Messages({ chatsData, user }) {
   const [chats, setChats] = useState(chatsData);
+  const router = useRouter();
   const [connectedUsers, setConnectedUsers] = useState([]);
 
-  const router = useRouter();
   const socket = useRef();
+  const [messages, setMessages] = useState([]);
+  const [bannerData, setBannerData] = useState({ name: "", profilePicUrl: "" });
+  const openChatId = useRef("");
+  // ref is for persisting the state of query string in url through re-renders
+  // this ref is jsut query string inside url
 
   useEffect(() => {
     if (!socket.current) {
@@ -53,6 +58,27 @@ function Messages({ chatsData, user }) {
       }
     };
   }, []);
+
+  useEffect(() => {
+    const loadMessages = () => {
+      socket.current.emit("loadMessages", {
+        userId: user._id,
+        messagesWith: router.query.message,
+      });
+    };
+
+    socket.current.on("messagesLoaded", async ({ chat }) => {
+      //   console.log(chat); messages and messagesWith array
+      setMessages(chat.messages);
+      setBannerData({
+        name: chat.messagesWith.name,
+        profilePicUrl: chat.messagesWith.profilePicUrl,
+      });
+      openChatId.current = chat.messsagesWith._id;
+    });
+
+    if (socket.current) loadMessages();
+  }, [router.query.message]);
 
   return (
     <>
