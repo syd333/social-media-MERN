@@ -5,7 +5,7 @@ import calculateTime from "../../utils/calculateTime";
 function Message({ message, user, bannerProfilePic }) {
   const [deleteIcon, showDeleteIcon] = useState(false);
 
-  const ifYouSender = message.send === user._id
+  const ifYouSender = message.sender === user._id
   return (
     <div className="bubbleWrapper">
       <div
