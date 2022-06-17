@@ -20,6 +20,7 @@ const {
   loadMessages,
   sendMsg,
   setMsgToUnread,
+  deleteMsg,
 } = require("./utilsServer/messageActions");
 
 io.on("connection", (socket) => {
@@ -69,6 +70,31 @@ io.on("connection", (socket) => {
     }
     !error && socket.emit("msgSent", { newMsg });
   });
+
+  socket.on("deleteMsg", async ({ userId, messagesWith, messageId }) => {
+    const { success } = await deleteMsg(userId, messagesWith, messageId);
+
+    if (success) socket.emit("msgDeleted");
+  });
+
+    socket.on(
+      "sendMsgFromNotification",
+      async ({ userId, msgSendToUserId, msg }) => {
+        const { newMsg, error } = await sendMsg(userId, msgSendToUserId, msg);
+        const receiverSocket = findConnectedUser(msgSendToUserId);
+
+        if (receiverSocket) {
+          //when you want to send message to particular socket
+          io.to(receiverSocket.socketId).emit("newMsgReceived", { newMsg });
+        }
+        //
+        else {
+          await setMsgToUnread(msgSendToUserId);
+        }
+
+        !error && socket.emit("msgSentFromNotification");
+      }
+    );
 
   socket.on("disconnect", () => {
     removeUser(socket.id);

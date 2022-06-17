@@ -21,12 +21,19 @@ import MessageInputField from "../components/Messages/MessageInputField";
 import getUserInfo from "../utils/getUserInfo";
 import newMsgSound from "../utils/newMsgSound";
 
+const scrollDivToBottom = (divRef) =>
+  divRef.current !== null &&
+  divRef.current.scrollIntoView({ behaviour: "smooth" });
+
 function Messages({ chatsData, user }) {
   const [chats, setChats] = useState(chatsData);
   const router = useRouter();
   const [connectedUsers, setConnectedUsers] = useState([]);
 
   const socket = useRef();
+
+  const divRef = useRef();
+
   const [messages, setMessages] = useState([]);
   const [bannerData, setBannerData] = useState({ name: "", profilePicUrl: "" });
   const openChatId = useRef("");
@@ -82,7 +89,7 @@ function Messages({ chatsData, user }) {
         });
 
         openChatId.current = chat.messagesWith._id;
-        //   divRef.current && scrollDivToBottom(divRef);
+        divRef.current && scrollDivToBottom(divRef);
       });
 
       socket.current.on("noChatFound", async () => {
@@ -207,15 +214,53 @@ function Messages({ chatsData, user }) {
     }
   }, []);
 
+  useEffect(() => {
+    messages.length > 0 && scrollDivToBottom(divRef);
+  }, [messages]);
+
+  const deleteMsg = (messageId) => {
+    if (socket.current) {
+      socket.current.emit("deleteMsg", {
+        userId: user._id,
+        messagesWith: openChatId.current,
+        messageId,
+      });
+
+      socket.current.on("msgDeleted", () => {
+        setMessages((prev) =>
+          prev.filter((message) => message._id !== messageId)
+        );
+      });
+    }
+  };
+
+  const deleteChat = async (messagesWith) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/chats/${messagesWith}`, {
+        headers: { Authorization: cookie.get("token") },
+      });
+
+      setChats((prev) =>
+        prev.filter((chat) => chat.messagesWith !== messagesWith)
+      );
+      router.push("/messages", undefined, { shallow: true });
+      openChatId.current = "";
+    } catch (error) {
+      alert("Error deleting chat");
+    }
+  };
+
   return (
     <>
       <Segment padded basic size="large" style={{ marginTop: "5px" }}>
-        <Header
-          icon="home"
-          content="Go Back!"
-          onClick={() => router.push("/")}
-          style={{ cursor: "pointer" }}
-        />
+        <a href="/">
+          <Header
+            icon="home"
+            content="Go Back!"
+            style={{ cursor: "pointer" }}
+          />
+        </a>
+
         <Divider hidden />
 
         <div style={{ marginBottom: "10px" }}>
@@ -236,7 +281,7 @@ function Messages({ chatsData, user }) {
                         chat={chat}
                         setChats={setChats}
                         connectedUsers={connectedUsers}
-                        // deleteChat={deleteChat}
+                        deleteChat={deleteChat}
                       />
                     ))}
                   </Segment>
@@ -262,14 +307,14 @@ function Messages({ chatsData, user }) {
                       {messages.length > 0 &&
                         messages.map((message) => (
                           <Message
-                            // divRef={divRef}
+                            divRef={divRef}
                             key={message._id}
                             bannerProfilePic={bannerData.profilePicUrl}
                             message={message}
                             setMessages={setMessages}
                             messagesWith={openChatId.current}
                             user={user}
-                            // deleteMsg={deleteMsg}
+                            deleteMsg={deleteMsg}
                           />
                         ))}
                     </div>
