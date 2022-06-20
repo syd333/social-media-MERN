@@ -125,6 +125,7 @@ function CreatePost({ user, setPosts }) {
         </Form.Group>
 
         <div
+          className="pic-div"
           onClick={() => inputRef.current.click()}
           style={addStyles()}
           onDragOver={(e) => dragEvent(e, true)}
@@ -170,9 +171,10 @@ function CreatePost({ user, setPosts }) {
         <Divider hidden />
 
         <Button
+          className="post-btn"
           circular
           disabled={newPost.text === "" || loading}
-          content={<strong>Post</strong>}
+          content="Post"
           style={{ backgroundColor: "#1DA1F2", color: "white" }}
           icon="send"
           loading={loading}

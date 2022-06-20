@@ -101,7 +101,7 @@ function ProfilePage({
                 ) : posts.length > 0 ? (
                   posts.map((post) => (
                     <CardPost
-                      //   socket={socket}
+                        socket={socket}
                       key={post._id}
                       post={post}
                       user={user}

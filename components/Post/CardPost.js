@@ -60,7 +60,7 @@ function CardPost({ post, user, setPosts, setShowToastr, socket }) {
       )}
 
       <Segment basic>
-        <Card color="teal" fluid>
+        <Card fluid>
           {post.picUrl && (
             <Image
               src={post.picUrl}
@@ -110,7 +110,7 @@ function CardPost({ post, user, setPosts, setShowToastr, socket }) {
               </>
             )}
 
-            <Card.Header>
+            <Card.Header className="post-username">
               <Link href={`/${post.user.username}`}>
                 <a>{post.user.name}</a>
               </Link>
@@ -200,7 +200,6 @@ function CardPost({ post, user, setPosts, setShowToastr, socket }) {
             {comments.length > 3 && (
               <Button
                 content="View More"
-                color="teal"
                 basic
                 circular
                 onClick={() => setShowModal(true)}

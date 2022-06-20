@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap');
+
 :root {
   --progressBar: #54d1db;
 }
@@ -53,4 +57,126 @@ body {
 
 .ui.warning.message {
   color: black !important;
+}
+
+
+/* navbar */
+.ui.list .list>.item .header,
+.ui.list>.item .header {
+  font-family: 'Bebas Neue', 'cursive' !important;
+  font-size: 36px;
+  color: gray !important;
+}
+
+.placeholder {
+  font-family: 'Roboto Condensed',
+  sans-serif !important;
+}
+
+.ui.form input:not([type]),
+.ui.form input[type=date],
+.ui.form input[type=datetime-local],
+.ui.form input[type=email],
+.ui.form input[type=file],
+.ui.form input[type=number],
+.ui.form input[type=password],
+.ui.form input[type=search],
+.ui.form input[type=tel],
+.ui.form input[type=text],
+.ui.form input[type=time],
+.ui.form input[type=url] {
+  font-family: 'Roboto Condensed',
+  sans-serif !important;
+}
+
+.ui.form input[type=checkbox],
+.ui.form textarea {
+  font-family: 'Roboto Condensed',
+  sans-serif !important;
+}
+
+.ui.form .field>label {
+font-family: 'Roboto', sans-serif !important;
+font-size: 22px !important;
+/* margin: 0px 1.5em 1em !important; */
+}
+
+.ui.form .field .ui.input input,
+.ui.form .fields .field .ui.input input {
+  /* margin: 0px 1.8em 1em !important; */
+}
+
+/* i.map.marker.alternate.icon {
+right: -14px !important;
+top: -5px !important;
+} */
+
+.post-btn {
+  background-color: sienna !important;
+  font-family: 'Roboto',
+  sans-serif !important;
+  font-size: 16px !important;
+    margin-left: 4% !important;
+    margin-right: 2% !important;
+}
+
+.ui.form .fields {
+  padding-bottom: 4% !important;
+  padding-left: 4% !important;
+  padding-right: 2% !important;
+}
+
+.pic-div {
+  margin-left: 4% !important;
+  margin-right: 2% !important;
+}
+
+.post-username{
+  font-family: 'Roboto',
+  sans-serif !important;
+  color: sienna !important;
+}
+
+.ui.card a,
+.ui.cards>.card a{
+  color: sienna !important;
+}
+
+.ui.card .meta,
+.ui.cards>.card .meta {
+    font-family: 'Roboto Condensed',
+    sans-serif !important;
+}
+
+.description{
+  font-family: 'Roboto',
+  sans-serif !important;
+}
+
+.metadata{
+    font-family: 'Roboto Condensed',
+    sans-serif !important;
+}
+
+.ui.comments .comment a.author{
+    font-family: 'Roboto',
+    sans-serif !important;
+}
+
+.text{
+      font-family: 'Roboto',
+      sans-serif !important;
+}
+
+.spanLikesList {
+  font-family: 'Roboto Condensed',
+  sans-serif !important;
+}
+
+button.ui.basic.circular.button{
+    font-family: 'Roboto',
+    sans-serif !important;
+    color:sienna !important;
+    border-color: sienna !important;
+    border: 1px solid sienna !important;
 }
