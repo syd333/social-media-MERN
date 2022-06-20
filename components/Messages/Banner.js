@@ -5,7 +5,7 @@ function Banner({ bannerData }) {
   const { name, profilePicUrl } = bannerData;
 
   return (
-    <Segment color="teal" attached="top">
+    <Segment attached="top">
       <Grid>
         <Grid.Column floated="left" width={14}>
           <h4>

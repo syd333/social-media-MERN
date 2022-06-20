@@ -180,3 +180,20 @@ button.ui.basic.circular.button{
     border-color: sienna !important;
     border: 1px solid sienna !important;
 }
+
+.ui.header .content {
+  font-family: 'Bebas Neue',
+  'cursive' !important;
+}
+
+.ui.info.message{
+  background-color: tan !important;
+  color: white  !important;
+  box-shadow: none !important;
+}
+
+.ui.message p {
+    font-family: 'Roboto',
+    sans-serif !important;
+    color: white !important;
+}

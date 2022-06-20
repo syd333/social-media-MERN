@@ -7,7 +7,7 @@ function MessageInputField({sendMsg}) {
 
   return (
     <div style={{ position: "sticky", bottom: "0" }}>
-      <Segment secondary color="teal" attached="bottom">
+      <Segment secondary attached="bottom">
         <Form
           reply
           onSubmit={(e) => {
