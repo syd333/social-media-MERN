@@ -16,6 +16,7 @@ import getUserInfo from "../utils/getUserInfo";
 import newMsgSound from "../utils/newMsgSound";
 import MessageNotificationModal from "../components/Home/MessageNotificationModal";
 import cookie from "js-cookie";
+import SocketHoc from "../components/SocketHoc";
 
 function Index({ user, postsData, errorLoading }) {
   const [posts, setPosts] = useState(postsData);
@@ -30,7 +31,7 @@ function Index({ user, postsData, errorLoading }) {
 
   useEffect(() => {
     if (!socket.current) {
-      socket.current = io('http://localhost:3000');
+      socket.current = io("http://localhost:3000");
     }
     if (socket.current) {
       socket.current.emit("join", { userId: user._id });
@@ -76,41 +77,43 @@ function Index({ user, postsData, errorLoading }) {
 
   return (
     <>
-      {showToastr && <PostDeleteToastr />}
-      {newMessageModal && newMessageReceived !== null && (
-        <MessageNotificationModal
-          socket={socket}
-          showNewMessageModal={showNewMessageModal}
-          newMessageModal={newMessageModal}
-          newMessageReceived={newMessageReceived}
-          user={user}
-        />
-      )}
-      <Segment>
-        <CreatePost user={user} setPosts={setPosts} />
-        {posts.length === 0 || errorLoading ? (
-          <NoPosts />
-        ) : (
-          <InfiniteScroll
-            hasMore={hasMore}
-            next={fetchDataOnScroll}
-            loader={<PlaceHolderPosts />}
-            endMessage={<EndMessage />}
-            dataLength={posts.length}
-          >
-            {posts.map((post) => (
-              <CardPost
-                // socket={socket}
-                key={post._id}
-                post={post}
-                user={user}
-                setPosts={setPosts}
-                setShowToastr={setShowToastr}
-              />
-            ))}
-          </InfiniteScroll>
+      <SocketHoc user={user} socket={socket}>
+        {showToastr && <PostDeleteToastr />}
+        {newMessageModal && newMessageReceived !== null && (
+          <MessageNotificationModal
+            socket={socket}
+            showNewMessageModal={showNewMessageModal}
+            newMessageModal={newMessageModal}
+            newMessageReceived={newMessageReceived}
+            user={user}
+          />
         )}
-      </Segment>
+        <Segment>
+          <CreatePost user={user} setPosts={setPosts} />
+          {posts.length === 0 || errorLoading ? (
+            <NoPosts />
+          ) : (
+            <InfiniteScroll
+              hasMore={hasMore}
+              next={fetchDataOnScroll}
+              loader={<PlaceHolderPosts />}
+              endMessage={<EndMessage />}
+              dataLength={posts.length}
+            >
+              {posts.map((post) => (
+                <CardPost
+                  socket={socket}
+                  key={post._id}
+                  post={post}
+                  user={user}
+                  setPosts={setPosts}
+                  setShowToastr={setShowToastr}
+                />
+              ))}
+            </InfiniteScroll>
+          )}
+        </Segment>
+      </SocketHoc>
     </>
   );
 }
