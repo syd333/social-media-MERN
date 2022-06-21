@@ -288,3 +288,32 @@ sans-serif !important;
     margin-left: 4% !important;
     margin-right: 2% !important;
 }
+
+
+.login-header{
+    font-family: 'Bebas Neue',
+    'cursive' !important;
+}
+
+.welcome-msg {
+  background-color: darkgray;
+    font-family: 'Roboto',
+    sans-serif !important;
+}
+
+.ui.message .header+p {
+  color: black !important;
+    font-family: 'Roboto',
+    sans-serif !important;
+}
+
+.new-user-msg{
+  background-color: slategrey !important;
+    font-family: 'Roboto',
+    sans-serif !important;
+}
+
+.signup-btn {
+      font-family: 'Roboto',
+      sans-serif !important;
+}

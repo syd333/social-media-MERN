@@ -22,7 +22,7 @@ function Following({
       setLoading(true);
       try {
         const res = await axios.get(
-           `${baseUrl}/api/profile/following/${profileUserId}`,,
+           `${baseUrl}/api/profile/following/${profileUserId}`,
           {
             headers: { Authorization: cookie.get("token") },
           }

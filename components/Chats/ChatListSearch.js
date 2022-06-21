@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { List, Image, Search } from "semantic-ui-react";
 import axios from "axios";
+import baseUrl from "../../utils/baseUrl";
 import cookie from "js-cookie";
 import Router, { useRouter } from "next/router";
 let cancel;
-import baseUrl from "../utils/baseUrl";
 
 
 function ChatListSearch({ chats, setChats }) {

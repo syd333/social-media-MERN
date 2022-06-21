@@ -88,7 +88,8 @@ function Login() {
             icon="signup"
             content="Login"
             type="submit"
-            color="orange"
+            color="black"
+            className="signup-btn"
             disabled={submitDisabled}
           />
         </Segment>

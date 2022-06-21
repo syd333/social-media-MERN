@@ -16,11 +16,12 @@ function Navbar() {
       >
         <Header style={{ paddingTop: "1rem", marginRight: "auto" }}>
           {" "}
-          social media app
+          new social
         </Header>
         <Link href="/login">
           <Menu.Item
             header
+            className="login-header"
             active={isActive("/login")}
             style={{ marginLeft: "auto" }}
           >
@@ -30,7 +31,11 @@ function Navbar() {
         </Link>
 
         <Link href="/signup">
-          <Menu.Item header active={isActive("/signup")}>
+          <Menu.Item
+            className="login-header"
+            header
+            active={isActive("/signup")}
+          >
             <Icon size="large" name="signup" />
             Signup
           </Menu.Item>

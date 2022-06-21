@@ -7,7 +7,7 @@ export const HeaderMessage = () => {
   const signupRoute = router.pathname === "/signup";
   return (
     <Message
-      color="teal"
+    className="welcome-msg"
       attached
       header={signupRoute ? "Get Started" : "Welcome Back!"}
       icon={signupRoute ? "settings" : "privacy"}
@@ -24,7 +24,7 @@ export const FooterMessage = () => {
     <>
       {signupRoute ? (
         <>
-          <Message attached="bottom" warning>
+          <Message attached="bottom" className="new-user-msg">
             <Icon name="help" />
             Existing user?
             <Link href="/login">Login here</Link>
@@ -38,12 +38,10 @@ export const FooterMessage = () => {
             <Link href="/rest">Forgot Password?</Link>
           </Message>
 
-          <Message attached="bottom" warning>
+          <Message attached="bottom" className="new-user-msg">
             <Icon name="help" />
             New User?
-            <Link href="/signup" >
-              Signup here
-            </Link>
+            <Link href="/signup">Signup here</Link>
           </Message>
         </>
       )}

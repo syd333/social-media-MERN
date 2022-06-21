@@ -224,10 +224,11 @@ function Signup() {
 
           <Divider hidden />
           <Button
+          className="signup-btn"
             icon="signup"
             content="Signup"
             type="submit"
-            color="orange"
+            color="black"
             disabled={submitDisabled || !usernameAvailable}
           />
         </Segment>
