@@ -1,9 +1,10 @@
 import axios from "axios";
+import baseUrl from "../utils/baseUrl";
 import catchErrors from "./catchErrors";
 import cookie from "js-cookie";
 
 export const Axios = axios.create({
-  baseURL: "http://localhost:3000/api/posts",
+  baseURL: `${baseUrl}/api/posts`,
   headers: { Authorization: cookie.get("token") },
 });
 

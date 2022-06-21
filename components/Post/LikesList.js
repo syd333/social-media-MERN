@@ -6,6 +6,7 @@ import Link from "next/link";
 import { LikesPlaceHolder } from "../Layout/PlaceHolderGroup";
 import cookie from "js-cookie";
 import { Axios } from "../../utils/postActions";
+import baseUrl from "../../utils/baseUrl";
 
 function LikesList({ postId, trigger }) {
   const [likesList, setLikesList] = useState([]);
@@ -15,7 +16,7 @@ function LikesList({ postId, trigger }) {
     setLoading(true);
     try {
       const res = await Axios.get(
-        `http://localhost:3000/api/posts/like/${postId}`,
+        `${baseUrl}/api/posts/like/${postId}`,
         { headers: { Authorization: cookie.get("token") } }
       );
       setLikesList(res.data);

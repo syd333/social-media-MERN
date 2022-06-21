@@ -1,10 +1,11 @@
 import axios from "axios";
 import cookie from "js-cookie";
+import baseUrl from "../utils/baseUrl";
 
 const getUserInfo = async (userToFindId) => {
   try {
     const res = await axios.get(
-      `http://localhost:3000/api/chats/user/${userToFindId}`,
+      `${baseUrl}/api/chats/user/${userToFindId}`,
       {
         headers: { Authorization: cookie.get("token") },
       }

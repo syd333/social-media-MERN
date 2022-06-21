@@ -4,6 +4,8 @@ import axios from "axios";
 import cookie from "js-cookie";
 import Router, { useRouter } from "next/router";
 let cancel;
+import baseUrl from "../utils/baseUrl";
+
 
 function ChatListSearch({ chats, setChats }) {
   const [text, setText] = useState("");
@@ -28,7 +30,7 @@ function ChatListSearch({ chats, setChats }) {
       const CancelToken = axios.CancelToken;
       const token = cookie.get("token");
 
-      const res = await axios.get(`http://localhost:3000/api/search/${value}`, {
+      const res = await axios.get(`${baseUrl}/api/search/${value}`, {
         headers: { Authorization: token },
         cancelToken: new CancelToken((canceler) => {
           cancel = canceler;

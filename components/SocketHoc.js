@@ -4,6 +4,7 @@ import getUserInfo from "../utils/getUserInfo";
 import newMsgSound from "../utils/newMsgSound";
 import MessageNotificationModal from "./Home/MessageNotificationModal";
 import NotificationPortal from "./Home/NotificationPortal";
+import baseUrl from "../utils/baseUrl";
 
 function SocketHoc({ user, socket, children }) {
   const [newMessageReceived, setNewMessageReceived] = useState(null);
@@ -14,7 +15,7 @@ function SocketHoc({ user, socket, children }) {
 
   useEffect(() => {
     if (!socket.current) {
-      socket.current = io('http://localhost:3000');
+      socket.current = io(baseUrl);
     }
 
     if (socket.current) {

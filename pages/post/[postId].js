@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import baseUrl from "../utils/baseUrl";
 import { parseCookies } from "nookies";
 import {
   Card,
@@ -138,7 +139,7 @@ export const getServerSideProps = async (ctx) => {
     const { postId } = ctx.query;
     const { token } = parseCookies(ctx);
 
-    const res = await axios.get(`http://localhost:3000/api/posts/${postId}`, {
+    const res = await axios.get(`${baseUrl}/api/posts/${postId}`, {
       headers: { Authorization: token },
     });
 

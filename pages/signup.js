@@ -7,7 +7,7 @@ import {
   FooterMessage,
 } from "../components/Common/WelcomeMessage";
 import axios from "axios";
-// import baseUrl from "../utils/baseUrl";
+import baseUrl from "../utils/baseUrl";
 import { registerUser } from "../utils/authUser";
 import uploadPic from "../utils/uploadPicToCloudinary";
 // let controller = null;
@@ -71,7 +71,7 @@ function Signup() {
       const CancelToken = axios.CancelToken;
 
       const res = await axios.get(
-        `http://localhost:3000/api/signup/${username}`,
+        `${baseUrl}/api/signup/${username}`,
         {
           cancelToken: new CancelToken((canceler) => {
             cancel = canceler;

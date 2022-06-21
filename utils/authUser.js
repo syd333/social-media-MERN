@@ -1,5 +1,5 @@
 import axios from "axios";
-// import baseUrl from "./baseUrl";
+import baseUrl from "./baseUrl";
 import catchErrors from "./catchErrors";
 import Router from "next/router";
 import cookie from "js-cookie";
@@ -11,7 +11,7 @@ export const registerUser = async (
   setLoading
 ) => {
   try {
-    const res = await axios.post(`http://localhost:3000/api/signup`, {
+    const res = await axios.post(`${baseUrl}/api/signup`, {
       user,
       profilePicUrl,
     });
@@ -27,7 +27,7 @@ export const registerUser = async (
 export const loginUser = async (user, setError, setLoading) => {
   setLoading(true);
   try {
-    const res = await axios.post(`http://localhost:3000/api/auth`, { user });
+    const res = await axios.post(`${baseUrl}/api/auth`, { user });
 
     setToken(res.data);
   } catch (error) {

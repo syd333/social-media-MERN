@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import axios from "axios";
+import baseUrl from "../utils/baseUrl";
 import { parseCookies } from "nookies";
 import {
   Segment,
@@ -44,7 +45,7 @@ function Messages({ chatsData, user }) {
   useEffect(() => {
     // if (user.unreadMessage) setMessageToUnread();
     if (!socket.current) {
-      socket.current = io("http://localhost:3000");
+      socket.current = io(baseUrl);
     }
 
     if (socket.current) {
@@ -236,7 +237,7 @@ function Messages({ chatsData, user }) {
 
   const deleteChat = async (messagesWith) => {
     try {
-      await axios.delete(`http://localhost:3000/api/chats/${messagesWith}`, {
+      await axios.delete(`${baseUrl}/api/chats/${messagesWith}`, {
         headers: { Authorization: cookie.get("token") },
       });
 
@@ -337,7 +338,7 @@ export const getServerSideProps = async (ctx) => {
   try {
     const { token } = parseCookies(ctx);
 
-    const res = await axios.get(`http://localhost:3000/api/chats`, {
+    const res = await axios.get(`${baseUrl}/api/chats`, {
       headers: { Authorization: token },
     });
 

@@ -16,7 +16,7 @@ function Notifications({ notifications, errorLoading, user, userFollowStats }) {
     (async () => {
       try {
         await axios.post(
-          `http://localhost:3000/api/notifications`,
+          `${baseUrl}/api/notifications`,
           {},
           { headers: { Authorization: cookie.get("token") } }
         );
@@ -77,7 +77,7 @@ export const getServerSideProps = async (ctx) => {
   try {
     const { token } = parseCookies(ctx);
 
-    const res = await axios.get(`http://localhost:3000/api/notifications`, {
+    const res = await axios.get(`${baseUrl}/api/notifications`, {
       headers: { Authorization: token },
     });
 

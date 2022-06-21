@@ -3,6 +3,8 @@ import { List, Image, Search } from "semantic-ui-react";
 import axios from "axios";
 import cookie from "js-cookie";
 import Router from "next/router";
+import baseUrl from "../utils/baseUrl";
+
 let cancel;
 
 function SearchComponent() {
@@ -26,7 +28,7 @@ function SearchComponent() {
       const CancelToken = axios.CancelToken;
       const token = cookie.get("token");
 
-      const res = await axios.get(`http://localhost:3000/api/search/${value}`, {
+      const res = await axios.get(`${baseUrl}/api/search/${value}`, {
         headers: { Authorization: token },
         cancelToken: new CancelToken((canceler) => {
           cancel = canceler;

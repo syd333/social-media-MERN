@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import baseUrl from "../utils/baseUrl";
 import io from "socket.io-client";
 import CreatePost from "../components/Post/CreatePost";
 import CardPost from "../components/Post/CardPost";
@@ -31,7 +32,7 @@ function Index({ user, postsData, errorLoading }) {
 
   useEffect(() => {
     if (!socket.current) {
-      socket.current = io("http://localhost:3000");
+      socket.current = io(baseUrl);
     }
     if (socket.current) {
       socket.current.emit("join", { userId: user._id });
@@ -61,7 +62,7 @@ function Index({ user, postsData, errorLoading }) {
   const fetchDataOnScroll = async () => {
     try {
       // const res = await Axios.get("/", { params: { pageNumber } });
-      const res = await axios.get("http://localhost:3000/api/posts", {
+      const res = await axios.get(`${baseUrl}/api/posts`, {
         headers: { Authorization: cookie.get("token") },
         params: { pageNumber },
       });
@@ -135,7 +136,7 @@ export const getServerSideProps = async (ctx) => {
   try {
     const { token } = parseCookies(ctx);
 
-    const res = await axios.get("http://localhost:3000/api/posts", {
+    const res = await axios.get(`${baseUrl}/api/posts`, {
       headers: { Authorization: token },
       params: { pageNumber: 1 },
     });

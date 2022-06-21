@@ -2,6 +2,7 @@ import Head from "next/head";
 // import App from "next/app";
 import axios from "axios";
 import { parseCookies, destroyCookie } from "nookies";
+import baseUrl from "../utils/baseUrl";
 import { redirectUser } from "../utils/authUser";
 import Layout from "../components/Layout/Layout";
 import "react-toastify/dist/ReactToastify.css";
@@ -43,7 +44,7 @@ MernApp.getInitialProps = async ({ Component, ctx }) => {
       const getFollowingData =
         ctx.pathname === "/notifications" || ctx.pathname === "/[username]";
 
-      const res = await axios.get("http://localhost:3000/api/auth", {
+      const res = await axios.get(`${baseUrl}/api/auth`, {
         headers: { Authorization: token, getFollowingData },
         params: { getFollowingData },
       });

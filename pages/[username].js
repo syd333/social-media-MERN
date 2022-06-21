@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import baseUrl from "../utils/baseUrl";
 import axios from "axios";
 import { parseCookies } from "nookies";
 import { NoProfilePosts, NoProfile } from "../components/Layout/NoData";
@@ -44,7 +45,7 @@ function ProfilePage({
         const { username } = router.query;
         const token = cookie.get("token");
         const res = await axios.get(
-          `http://localhost:3000/api/profile/posts/${username}`,
+          `${baseUrl}/api/profile/posts/${username}`,
           {
             headers: { Authorization: token },
           }
@@ -101,7 +102,7 @@ function ProfilePage({
                 ) : posts.length > 0 ? (
                   posts.map((post) => (
                     <CardPost
-                        // socket={socket}
+                      // socket={socket}
                       key={post._id}
                       post={post}
                       user={user}
@@ -152,12 +153,9 @@ export const getServerSideProps = async (ctx) => {
     const { username } = ctx.query;
     const { token } = parseCookies(ctx);
 
-    const res = await axios.get(
-      `http://localhost:3000/api/profile/${username}`,
-      {
-        headers: { Authorization: token },
-      }
-    );
+    const res = await axios.get(`${baseUrl}/api/profile/${username}`, {
+      headers: { Authorization: token },
+    });
 
     const { profile, followersLength, followingLength } = res.data;
 

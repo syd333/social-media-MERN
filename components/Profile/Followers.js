@@ -5,6 +5,7 @@ import { NoFollowData } from "../Layout/NoData";
 import { followUser, unfollowUser } from "../../utils/profileActions";
 import axios from "axios";
 import cookie from "js-cookie";
+import baseUrl from "../../utils/baseUrl";
 
 function Followers({
   user,
@@ -21,7 +22,7 @@ function Followers({
       setLoading(true);
       try {
         const res = await axios.get(
-          `http://localhost:3000/api/profile/followers/${profileUserId}`,
+          `${baseUrl}/api/profile/followers/${profileUserId}`,
           {
             headers: { Authorization: cookie.get("token") },
           }
