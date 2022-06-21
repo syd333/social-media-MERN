@@ -20,17 +20,16 @@ function Settings({ newMessagePopup }) {
 
   const isFirstRun = useRef(true);
 
-
   useEffect(() => {
     success && setTimeout(() => setSuccess(false), 3000);
   }, [success]);
 
-    useEffect(() => {
-      if (isFirstRun.current) {
-        isFirstRun.current = false;
-        return;
-      }
-    }, [popupSetting]);
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+  }, [popupSetting]);
 
   return (
     <>
@@ -46,6 +45,8 @@ function Settings({ newMessagePopup }) {
           <List.Icon name="user secret" size="large" verticalAlign="middle" />
           <List.Content>
             <List.Header
+              className="settings-header"
+              color="black"
               onClick={() => showPasswordFields(!passwordFields)}
               as="a"
               content="Update Password"
@@ -70,6 +71,8 @@ function Settings({ newMessagePopup }) {
 
           <List.Content>
             <List.Header
+            color="black"
+              className="settings-header"
               onClick={() => showNewMessageSettings(!newMessageSettings)}
               as="a"
               content="Show New Message Popup?"
@@ -178,15 +181,16 @@ const UpdatePassword = ({ setSuccess, showPasswordFields }) => {
             {/* BUTTONS */}
 
             <Button
+              className="update-profile-confirm-btn"
               disabled={loading || currentPassword === "" || newPassword === ""}
               compact
               icon="configure"
               type="submit"
-              color="teal"
               content="Confirm"
             />
 
             <Button
+              className="update-profile-cancel-btn"
               disabled={loading}
               compact
               icon="cancel"

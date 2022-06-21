@@ -64,8 +64,8 @@ body {
 .ui.list .list>.item .header,
 .ui.list>.item .header {
   font-family: 'Bebas Neue', 'cursive' !important;
-  font-size: 36px;
-  color: gray !important;
+  font-size: 28px;
+  color: black !important;
 }
 
 .placeholder {
@@ -97,7 +97,7 @@ body {
 
 .ui.form .field>label {
 font-family: 'Roboto', sans-serif !important;
-font-size: 22px !important;
+font-size: 16px !important;
 /* margin: 0px 1.5em 1em !important; */
 }
 
@@ -115,7 +115,7 @@ top: -5px !important;
   background-color: sienna !important;
   font-family: 'Roboto',
   sans-serif !important;
-  font-size: 16px !important;
+  font-size: 14px !important;
     margin-left: 4% !important;
     margin-right: 2% !important;
 }
@@ -187,7 +187,7 @@ button.ui.basic.circular.button{
 }
 
 .ui.info.message{
-  background-color: tan !important;
+  background-color: darkgray !important;
   color: white  !important;
   box-shadow: none !important;
 }
@@ -196,4 +196,88 @@ button.ui.basic.circular.button{
     font-family: 'Roboto',
     sans-serif !important;
     color: white !important;
+}
+
+.item{
+  font-family: 'Roboto',
+  sans-serif !important;
+}
+
+.ui.header {
+    font-family: 'Bebas Neue',
+    'cursive' !important;
+}
+
+.stretched.row{
+  font-family: 'Roboto',
+  sans-serif !important;
+}
+
+.content{
+    font-family: 'Roboto',
+    sans-serif !important;
+}
+
+.ui.instagram.button {
+  background-color:darkgray !important;
+  font-family: 'Roboto',
+  sans-serif !important;
+}
+
+.ui.twitter.button{
+  background-color: slategrey !important;
+  font-family: 'Roboto',
+  sans-serif !important;
+}
+
+/* profile page update profile*/
+.social-links-btn{
+font-family: 'Roboto',
+sans-serif !important;
+background-color: darkgray !important;
+color: white !important;
+}
+
+.update-profile-btn{
+  font-family: 'Roboto',
+  sans-serif !important;
+  background-color: slategrey !important;
+  color: white !important;
+}
+
+.settings-header {
+  color: black !important;
+}
+
+a.header{
+  color: black !important;
+}
+
+.ui.list>.item a.header {
+  color: black !important;
+}
+
+.ui.list .list>.item a.header,
+.ui.list>.item a.header {
+  color: black !important;
+}
+
+.social-links-header {
+  font-family: 'Roboto',
+  sans-serif !important;
+  color: white !important;
+}
+
+.update-profile-confirm-btn{
+    font-family: 'Roboto',
+    sans-serif !important;
+      background-color: slategrey !important;
+      color: white !important;
+}
+
+.update-profile-cancel-btn {
+  font-family: 'Roboto',
+    sans-serif !important;
+background-color: darkgray !important;
+  color: white !important;
 }

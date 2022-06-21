@@ -87,7 +87,7 @@ function UpdateProfile({ Profile }) {
         <Divider hidden />
 
         <Button
-          color="blue"
+          className="update-profile-btn"
           icon="pencil alternate"
           disabled={profile.bio === "" || loading}
           content="Submit"

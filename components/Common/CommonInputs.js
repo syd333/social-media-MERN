@@ -25,8 +25,8 @@ function CommonInputs({
         placeholder="bio"
       />
       <Button
+      className="social-links-btn"
         content="Add Social Links"
-        color="red"
         icon="at"
         type="button"
         onClick={() => setShowSocialLinks(!showSocialLinks)}
@@ -64,6 +64,7 @@ function CommonInputs({
             onChange={handleChange}
           />
           <Message
+          className="social-links-header"
             icon="attention"
             info
             size="small"
