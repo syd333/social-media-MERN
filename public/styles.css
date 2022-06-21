@@ -281,3 +281,10 @@ a.header{
 background-color: darkgray !important;
   color: white !important;
 }
+
+.crop-img-btn {
+  font-family: 'Roboto',
+sans-serif !important;
+    margin-left: 4% !important;
+    margin-right: 2% !important;
+}

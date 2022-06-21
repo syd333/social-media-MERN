@@ -75,14 +75,14 @@ function CreatePost({ user, setPosts }) {
 
   return (
     <>
-      {showModal && (
+      {/* {showModal && (
         <CropImageModal
           mediaPreview={mediaPreview}
           setMedia={setMedia}
           showModal={showModal}
           setShowModal={setShowModal}
         />
-      )}
+      )} */}
 
       <Form error={error !== null} onSubmit={handleSubmit}>
         <Message
@@ -154,19 +154,19 @@ function CreatePost({ user, setPosts }) {
           )}
         </div>
 
-        {mediaPreview !== null && (
+        {/* {mediaPreview !== null && (
           <>
             <Divider hidden />
 
             <Button
               content="Crop Image"
               type="button"
-              primary
               circular
+              className="crop-img-btn"
               onClick={() => setShowModal(true)}
             />
           </>
-        )}
+        )} */}
 
         <Divider hidden />
 
