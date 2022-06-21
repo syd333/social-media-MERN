@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import baseUrl from "../utils/baseUrl";
+import baseUrl from "../../utils/baseUrl";
 import { parseCookies } from "nookies";
 import {
   Card,
